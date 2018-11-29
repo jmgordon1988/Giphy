@@ -15,52 +15,51 @@ function makeButtons() {
 
 $("#add-character").on("click", function (event) {
     event.preventDefault();
-
-    var character = $("#character-input").val().trim();
-
-    topics.push(character);
+    var name = $("#character-input").val().trim();
+    topics.push(name);
+    $("#character-input").val("");
 
     makeButtons();
 
 });
 
 $(document).on("click", ".character", main);
-
 makeButtons();
 
-function main(){
-$("button").on("click", function () {
-    $("#gifshere").empty();
-    var slasher = $(this).attr("data-name");
+function main() {
+    $("button").on("click", function () {
+        $("#gifshere").empty();
+        var slasher = $(this).attr("data-name").trim();
 
-    var key = "OhZvd5m3Bz8gbjnHIf8IBQOvBI9szvQy";
+        var key = "OhZvd5m3Bz8gbjnHIf8IBQOvBI9szvQy";
 
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + slasher + "&api_key=" + key + "&limit=10";
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + slasher + "&api_key=" + key + "&limit=10";
 
-    $.ajax({
-        url: queryURL,
-        method: "GET"
-    })
-        .then(function (response) {
-            console.log(queryURL);
-            console.log(response);
-
-            var results = response.data;
-
-            for (var i = 0; i < results.length; i++) {
-                var characterDiv = $("<div>");
-
-                var p = $("<p style='margin-top: 10px; margin-bottom: 0rem;'>").text("Rating: " + results[i].rating);
-
-                var charImage = $("<img style='padding: 5px;'>");
-                charImage.attr("src", results[i].images.fixed_height.url);
-                charImage.attr("width", "250");
-                charImage.attr("height", "125");
-
-                characterDiv.append(p);
-                characterDiv.append(charImage);
-
-                $("#gifshere").prepend(characterDiv);
-            }
+        $.ajax({
+            url: queryURL,
+            method: "GET"
         })
-})}
+            .then(function (response) {
+                console.log(queryURL);
+                console.log(response);
+                $("#gifshere").empty();
+                var results = response.data;
+
+                for (var i = 0; i < 10; i++) {
+                    var characterDiv = $("<div>");
+
+                    var p = $("<p style='margin-top: 10px; margin-bottom: 0rem;'>").text("Rating: " + results[i].rating);
+
+                    var charImage = $("<img style='padding: 5px;'>");
+                    charImage.attr("src", results[i].images.fixed_height.url);
+                    charImage.attr("width", "250");
+                    charImage.attr("height", "125");
+
+                    characterDiv.append(p);
+                    characterDiv.append(charImage);
+
+                    $("#gifshere").prepend(characterDiv);
+                }
+            })
+    })
+}

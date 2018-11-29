@@ -31,7 +31,7 @@ function main() {
         $("#gifshere").empty();
         var slasher = $(this).attr("data-name").trim();
 
-        var key = "OhZvd5m3Bz8gbjnHIf8IBQOvBI9szvQy";
+        var key = "OhZvd5m3Bz8gbjnHIf8IBQOvBI9szvQy"; 
 
         var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + slasher + "&api_key=" + key + "&limit=10";
 
@@ -51,7 +51,11 @@ function main() {
                     var p = $("<p style='margin-top: 10px; margin-bottom: 0rem;'>").text("Rating: " + results[i].rating);
 
                     var charImage = $("<img style='padding: 5px;'>");
-                    charImage.attr("src", results[i].images.fixed_height.url);
+                    charImage.addClass("gif");
+                    charImage.attr("src", results[i].images.fixed_height_still.url);
+                    charImage.attr("status", "still");
+                    charImage.attr("data-animate", results[i].images.fixed_height.url);
+                    charImage.attr("data-still", results[i].images.fixed_height_still.url);
                     charImage.attr("width", "250");
                     charImage.attr("height", "125");
 
@@ -63,3 +67,17 @@ function main() {
             })
     })
 }
+
+$(document).on("click", ".gif", function(){
+    var state = $(this).attr("status");
+
+    if (state === "still"){
+        $(this).attr("src", $(this).attr("data-animate"));
+        $(this).attr("status", "animate");
+    }
+
+else {
+    $(this).attr("src", $(this).attr("data-still"));
+    $(this).attr("status", "still");
+}
+});

@@ -23,11 +23,11 @@ $("#add-character").on("click", function (event) {
 
 });
 
-$(document).on("click", ".character", main);
+$(document).ready(main);
 makeButtons();
 
 function main() {
-    $("button").on("click", function () {
+    $(document).on("click", ".character", function () {
         $("#gifshere").empty();
         var slasher = $(this).attr("data-name").trim();
 
